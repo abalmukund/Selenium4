@@ -6,12 +6,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.remote.http.Contents;
-import org.openqa.selenium.remote.http.HttpResponse;
-import org.openqa.selenium.remote.http.Route;
+import org.openqa.selenium.remote.http.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,6 +46,28 @@ public class CDPTest {
             driver.get("https://automationbookstore.dev/");
         }
         Thread.sleep(5000);
+    }
+
+    @Test
+    void gettingStatusCodes() {
+        Filter responseStatusCodes = new Filter() {
+            @Override
+            public HttpHandler apply(HttpHandler httpHandler) {
+                return req -> {
+                    HttpResponse res = httpHandler.execute(req);
+                    System.out.printf("Request: %s -> Response: %s%n", req, res.getStatus());
+                    return res;
+                };
+            }
+        };
+
+        try (NetworkInterceptor interceptor = new NetworkInterceptor(driver, responseStatusCodes)) {
+            driver.get("http://duckduckgo.com");
+            Thread.sleep(2000);
+            driver.findElement(By.name("q")).sendKeys("cheese");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterEach
