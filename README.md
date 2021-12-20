@@ -15,6 +15,8 @@ There are 6 packages in src/test/java to explain 6 different features of the Sel
 5. WebDriver BiDi
 6. Window Management
 7. Change in Action class
+8. Decorating WebDriver - Highlight elements before performing any operation
+9. Handle authentication pop-ups
 
 For Selenium Grid:
 For detailed features about Selenium Grid please see: https://www.selenium.dev/documentation/grid/
