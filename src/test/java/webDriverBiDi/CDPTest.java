@@ -1,6 +1,7 @@
 package webDriverBiDi;
 
 import com.google.common.net.MediaType;
+import common.BaseClass;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -63,10 +64,9 @@ public class CDPTest {
 
         try (NetworkInterceptor interceptor = new NetworkInterceptor(driver, responseStatusCodes)) {
             driver.get("http://duckduckgo.com");
-            Thread.sleep(2000);
+            BaseClass.waitUntil(driver, By.name("q"));
             driver.findElement(By.name("q")).sendKeys("cheese");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            BaseClass.sleepTight(5000);
         }
     }
 

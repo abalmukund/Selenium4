@@ -1,14 +1,19 @@
 package actionClass;
 
+import common.BaseClass;
+import decorators.HighlightingListener;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 
 public class ActionTest {
     WebDriver driver;
@@ -20,25 +25,24 @@ public class ActionTest {
 
     @BeforeEach
     public void setUpDriverInstance() {
-        driver = new ChromeDriver();
+        WebDriver baseDriver = new ChromeDriver();
+        driver = new EventFiringDecorator(new HighlightingListener()).decorate(baseDriver);
     }
 
     @Test
-    public void actionClickTest() throws InterruptedException {
-        driver.get("https://www.google.com");
-        driver.findElement(By.xpath("//input[@name=\"q\"]")).sendKeys("panda");
-        driver.findElement(By.xpath("//input[@name=\"q\"]")).submit();
+    public void actionClickTest() {
+        driver.get("http://www.facebook.com/");
+        WebElement txtUsername = driver.findElement(By.id("email"));
+        txtUsername.sendKeys("Hello");
         Actions action = new Actions(driver);
-        action.click(driver.findElement(By.xpath("(//div[contains(text(),\"All\")])[2]"))); //has replaced moveToElement(onElement).click() {}
-        Thread.sleep(2000);
-        action.clickAndHold(driver.findElement(By.xpath("//h3[contains(text(),'Giant panda - Wikipedia')]"))); //has replaced moveToElement(onElement).clickAndHold()
-        Thread.sleep(2000);
-        action.release(); //which was ealier a part of org.openqa.selenium.interactions.ButtonReleaseAction class has now been moved to Action class
-        Thread.sleep(2000);
-        action.contextClick(driver.findElement(By.xpath("(//img)[1]"))); //has replaced moveToElement(onElement).contextClick()
-        Thread.sleep(2000);
-        action.doubleClick(driver.findElement(By.xpath("(//img)[1]"))); //has replaced moveToElement(element).doubleClick()
-        Thread.sleep(2000);
+        action.click(txtUsername); //has replaced moveToElement(onElement).click() {}
+        action.keyDown(txtUsername, Keys.SHIFT);
+        action.sendKeys(txtUsername, "hello");
+        action.keyUp(txtUsername, Keys.SHIFT);
+        action.doubleClick(txtUsername); //has replaced moveToElement(element).doubleClick()
+        action.contextClick(txtUsername); //has replaced moveToElement(onElement).contextClick()
+        action.build().perform();
+        BaseClass.sleepTight(2000);
     }
 
     @AfterEach

@@ -1,5 +1,6 @@
 package relativeLocators;
 
+import common.BaseClass;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -29,7 +30,7 @@ public class RelativeLocatorTest {
     }
 
     @Test
-    public void RelativeLocTest() throws InterruptedException {
+    public void RelativeLocTest() {
         driver.get("https://automationbookstore.dev/");
         WebElement firstBook = driver.findElement(By.cssSelector("#pid1_title"));
         WebElement theBookRightOf = driver.findElement(with(By.tagName("h2")).toRightOf(firstBook));
@@ -37,7 +38,7 @@ public class RelativeLocatorTest {
         WebElement advSelBook = driver.findElement(By.cssSelector("#pid6_title"));
         WebElement theJavaTesterBook = driver.findElement(with(By.tagName("h2")).toLeftOf(advSelBook).below(firstBook));
         System.out.println("The text is: " + theJavaTesterBook.getText());
-        Thread.sleep(2000);
+        BaseClass.sleepTight(2000);
     }
 
     static void highlightElement(final WebElement element, final WebDriver driver) {
@@ -54,18 +55,17 @@ public class RelativeLocatorTest {
     }
 
     @Test
-    public void wikiTest() throws InterruptedException {
+    public void wikiTest() {
         driver.get("https://en.wikipedia.org/wiki/Cheese");
 
         List<WebElement> thumbnails = driver.findElements(By.className("tright"));
         WebElement middle = thumbnails.get(1);
         highlightElement(middle, driver);
-        Thread.sleep(2000);
+        BaseClass.sleepTight(2000);
         Assertions.assertTrue(middle.getText().contains("platter"));
 
         WebElement above = driver.findElement(RelativeLocator.with(By.className("tright")).above(middle));
         highlightElement(above, driver);
-        Thread.sleep(2000);
-
+        BaseClass.sleepTight(3000);
     }
 }

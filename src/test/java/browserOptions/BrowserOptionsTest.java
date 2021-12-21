@@ -32,10 +32,10 @@ public class BrowserOptionsTest {
         browserOptions.setBrowserVersion("96");
 //        browserOptions.setCapability("build", "BuildName_"+Math.random());
 //        browserOptions.setCapability("name", "TestCaseName");
-        Map<String, Object> cloudOptions = new HashMap<>();
-        cloudOptions.put("build", "BuildName");
-        cloudOptions.put("name", "TestCaseName");
-        browserOptions.setCapability("sauce:options", cloudOptions);
+        Map<String, Object> sauceOptions = new HashMap<>();
+        sauceOptions.put("build", "BuildName");
+        sauceOptions.put("name", "TestCaseName");
+        browserOptions.setCapability("sauce:options", sauceOptions);
         driver = new RemoteWebDriver(new URL(cloudURL), browserOptions);
 
 //        driver = new ChromeDriver();

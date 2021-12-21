@@ -6,8 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsDriver;
 import org.openqa.selenium.support.events.WebDriverListener;
 
-import java.time.Duration;
-
 public class HighlightingListener implements WebDriverListener {
 
     @Override
@@ -52,9 +50,9 @@ public class HighlightingListener implements WebDriverListener {
                 originalStyle == null ? "" : originalStyle);
     }
 
-    private void sleepTight(int i) {
+    private void sleepTight(long i) {
         try {
-            Thread.sleep(Duration.ofMillis(i).toMillis());
+            Thread.sleep(i);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

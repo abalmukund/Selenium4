@@ -25,12 +25,21 @@ public class Authenticating {
     }
 
     @Test
-    void authenticate() throws InterruptedException {
+    void noAuthentication() {
+        driver.get("https://the-internet.herokuapp.com");
+        driver.findElement(By.linkText("Digest Authentication")).click();
+        BaseClass.sleepTight(2000);
+        String body = driver.findElement(By.tagName("body")).getText();
+        Assertions.assertTrue(body.contains("Congratulations!"));
+    }
+
+    @Test
+    void authenticate() {
         ((HasAuthentication) driver).register(() -> new UsernameAndPassword("admin", "admin"));
 
         driver.get("https://the-internet.herokuapp.com");
         driver.findElement(By.linkText("Digest Authentication")).click();
-        Thread.sleep(2000);
+        BaseClass.sleepTight(2000);
         String body = driver.findElement(By.tagName("body")).getText();
         Assertions.assertTrue(body.contains("Congratulations!"));
     }

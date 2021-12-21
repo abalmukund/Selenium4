@@ -1,5 +1,6 @@
 package windowManagement;
 
+import common.BaseClass;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,23 +30,30 @@ public class WindowTests {
     }
 
     @Test
-    public void WinTest() throws InterruptedException {
+    public void WinTest() {
         driver.get("https://www.selenium.dev/");
-        Thread.sleep(2000);
+        BaseClass.sleepTight(2000);
         String originalWindow = driver.getWindowHandle();
         assert driver.getWindowHandles().size() == 1;
+
+        driver.switchTo().newWindow(WindowType.TAB);
+        driver.navigate().to("https://www.amazon.in");
+        BaseClass.sleepTight(2000);
 
         driver.switchTo().newWindow(WindowType.WINDOW);
         driver.navigate().to("https://www.google.com");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(numberOfWindowsToBe(2));
+        wait.until(numberOfWindowsToBe(3));
 
-
-        driver.switchTo().newWindow(WindowType.TAB);
-        driver.navigate().to("https://www.amazon.in");
-        Thread.sleep(2000);
-
+        for (String handles : driver.getWindowHandles()) {
+            if (!handles.equals(originalWindow)) {
+                driver.switchTo().window(handles);
+                break;
+            }
+        }
+        BaseClass.sleepTight(2000);
         driver.switchTo().window(originalWindow);
+        BaseClass.sleepTight(2000);
     }
 
     @AfterEach

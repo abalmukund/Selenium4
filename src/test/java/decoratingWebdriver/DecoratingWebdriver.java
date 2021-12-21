@@ -31,12 +31,13 @@ public class DecoratingWebdriver {
     }
 
     @Test
-    void loadWikipedia() throws InterruptedException {
+    void loadWikipedia() {
         driver.get("http://duckduckgo.com");
         WebElement element = driver.findElement(By.name("q"));
         element.sendKeys("cheese");
-        element.submit();
-        Thread.sleep(2000);
+        driver.findElement(By.id("search_button_homepage")).click();
+        BaseClass.sleepTight(2000);
         wait.until(d -> d.findElement(By.linkText("Cheese - Wikipedia"))).click();
+        BaseClass.sleepTight(2000);
     }
 }
