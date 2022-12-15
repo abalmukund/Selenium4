@@ -21,6 +21,8 @@ public class BaseClass {
             case "firefox":
                 WebDriverManager.firefoxdriver().architecture(Architecture.X64).setup();
                 break;
+            case "edge":
+                WebDriverManager.edgedriver().setup();
             default:
                 break;
         }
