@@ -16,7 +16,7 @@
     </test>
 
     <test name="Edge Test">
-        <parameter name="browser" value="edge"/>
+        <parameter name="browser" value="chrome"/>
         <classes>
             <class name="seleniumGrid.GridTest"/>
         </classes>
